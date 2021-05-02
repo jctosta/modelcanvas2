@@ -1,0 +1,28 @@
+@charset "utf-8";
+
+.menu {
+    position: sticky;
+    display: inline-block;
+    vertical-align: top;
+    max-height: 100vh;
+    overflow-y: auto;
+    top: 0;
+    bottom: 0;
+}
+
+// Set your brand colors
+// $primary: #8A4D76;
+// $info: #FA7C91;
+// $success: #757763;
+// $warning: yellow;
+// $danger: red;
+// $light: #ccc;
+// $dark: #444;
+
+// Update font family
+// $family-sans-serif: "Calibri", "Arial";
+
+// Import the Bulma-fluent
+// @import "../node_modules/bulma-fluent/bulma.sass";
+
+@import "../node_modules/bulma/bulma.sass";

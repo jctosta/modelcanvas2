@@ -8,8 +8,26 @@
     "start": "next start"
   },
   "dependencies": {
+    "@dnd-kit/core": "^2.1.2",
+    "@fortawesome/fontawesome-free": "^5.15.3",
+    "@headlessui/react": "^1.1.1",
+    "@heroicons/react": "^1.0.1",
+    "@tailwindcss/forms": "^0.3.2",
+    "bulma": "^0.9.2",
+    "bulma-fluent": "^0.4.3",
+    "framer-motion": "^4.1.11",
+    "halfmoon": "^1.1.1",
     "next": "10.1.3",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-redux": "^7.2.3",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.9",
+    "sass": "^1.32.8"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.2.5",
+    "postcss": "^8.2.9",
+    "tailwindcss": "^2.1.1"
   }
 }

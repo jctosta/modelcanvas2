@@ -1,16 +1,10 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+html, body {  
+    overscroll-behavior: none;
+    /* @apply bg-yellow-50; */
+    background-color: #f6f2ef;
+    /* bg-gradient-to-r from-blue-500 via-purple-500 to-red-500 */
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-* {
-  box-sizing: border-box;
+.custom-bg {
+    background-color: #f6f2ef;
 }
