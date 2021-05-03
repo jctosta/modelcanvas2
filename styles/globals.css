@@ -1,7 +1,7 @@
 html, body {  
     overscroll-behavior: none;
-    /* @apply bg-yellow-50; */
-    background-color: #f6f2ef;
+    @apply bg-sepia-50 dark:bg-steel-800;
+    /* background-color: #f6f2ef; */
     /* bg-gradient-to-r from-blue-500 via-purple-500 to-red-500 */
 }
 
