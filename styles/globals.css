@@ -1,10 +1,18 @@
-html, body {  
+body {  
     overscroll-behavior: none;
-    @apply bg-sepia-50 dark:bg-steel-800;
+    @apply bg-sepia-50 dark:bg-steel-700;
     /* background-color: #f6f2ef; */
     /* bg-gradient-to-r from-blue-500 via-purple-500 to-red-500 */
 }
 
 .custom-bg {
     background-color: #f6f2ef;
+}
+
+#TextCanvas {
+    @apply fill-current text-steel-800 dark:text-gray-100;
+}
+
+.card-home {
+    @apply shadow-sm font-medium bg-white dark:bg-steel-600 dark:text-white rounded-md border-steel-900 dark:border-steel-800 border-2 border-opacity-10 flex flex-col p-4;
 }

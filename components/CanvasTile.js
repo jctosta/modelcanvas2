@@ -21,7 +21,7 @@ export default function CanvasTile( {children, id, title, addCard} ) {
     return (
         <>
             {/* <CanvasInputDialog open={isOpen} showDialog={((state) => setIsOpen(state)).bind} /> */}
-            <div className="shadow-sm font-medium bg-white dark:bg-gray-700 dark:text-white rounded-md border-gray-900 border-2 border-opacity-10 flex flex-col p-4">
+            <div className="card-home">
                 <div className="flex-none">
                     <div className="flex flex-row">
                         <div className="flex-grow">

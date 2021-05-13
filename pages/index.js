@@ -1,61 +1,64 @@
 import Head from 'next/head';
-import { useCanvas, useDispatchCanvas } from '../components/CanvasStore';
+import Image from 'next/image';
+import Link from 'next/link';
 import Layout from '../components/Layout';
-import CanvasContainer from '../components/Canvas';
-import CanvasTile from '../components/CanvasTile';
-import CanvasItem from '../components/CanvasItem';
-import { ADD_CARD, EDIT_CARD, REMOVE_CARD, MOVE_CARD } from '../components/ActionTypes';
 
-export default function Home() {
-
-  const canvas = useCanvas();
-  const dispatch = useDispatchCanvas();
-
-  const handleTeste = (event) => dispatch({
-    type: 'TESTE',
-    payload: 'Olá Mundo API de Contexto'
-  });
-
-  const handleMoveCard = (event) => {
-    const { over, active } = event;
-    // dispatch({
-    //   type: EDIT_CARD,
-    //   payload: {
-    //     cardId: over.id,
-    //     body, 
-    //     tileId: active.id
-    //   }
-    // })
-    console.log(event);
-  };
-
-  const handleAddCard = (tileId, body) => {
-    dispatch({
-      type: ADD_CARD,
-      payload: {
-        tileId,
-        body,
-      }
-    });
-  };
-
-  return (    
-    <Layout canvasName={canvas.name} canvasTiles={canvas.tiles}>
-        <Head>
-          <title>Model Canvas</title>
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        <CanvasContainer>
-          {canvas.tiles.map(t => (
-            <CanvasTile key={t.id} id={t.id} title={t.title} addCard={handleAddCard}>
-              {t.cards.map((c, idx) => (
-                <CanvasItem key={idx} id={`${t.id}-${idx}`} parentId={t.id}>
-                  {c.content}
-                </CanvasItem>
-                ))}
-            </CanvasTile>            
-          ))}
-        </CanvasContainer>        
-    </Layout>    
-  )
+export default function Index() {
+    return (
+        <Layout>
+            <Head>
+                <title>Model Canvas</title>
+                <link rel="icon" href="/favicon.ico" />
+            </Head>
+            <div className="container max-w-5xl mx-auto">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="p-4 text-center md:text-left text-gray-900 dark:text-gray-100">
+                        <h1 className="text-5xl font-bold py-4">A better view for your business</h1>
+                        <p className="text-xl font-normal py-4">A business canvas application, recommended for all types of needs.</p>
+                        <div className="py-4">
+                            <Link href="/canvas"><a className="bg-sunset-500 p-3 rounded-md text-white hover:bg-sunset-700">Getting Started...</a></Link>
+                        </div>
+                    </div>
+                    <div className="flex align-middle justify-center md:justify-end">
+                        <img 
+                            src="/Startup_Flatline.svg" 
+                            alt="Startup Flatline" 
+                            width="406px"
+                            height="306px"                            
+                            />
+                    </div>
+                </div>
+            </div>
+            <div className="container max-w-5xl mx-auto text-gray-900 dark:text-gray-100">
+                <hr className="p-4" />
+                <h2 className="text-3xl p-4 font-bold">A canvas that fit your needs...</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+                    <div className="card-home">
+                        <h3 className="text-lg font-semibold">Business Model Canvas</h3>
+                        <p className="text-base italic">Plan your business and focus on what matters.</p>
+                    </div>
+                    <div className="card-home">
+                        <h3 className="text-lg font-semibold">Lean Canvas</h3>
+                        <p className="text-base italic">Lorem ipsum dolor, sit amet consectetur adipisicing elit.</p>
+                    </div>
+                    <div className="card-home">
+                        <h3 className="text-lg font-semibold">Media Canvas</h3>
+                        <p className="text-base italic">Starting a new youtube channel, maybe a podcast, plan ahead and discover the problems that you may face along the road.</p>
+                    </div>
+                    <div className="card-home">
+                        <h3 className="text-lg font-semibold">SWOT Canvas</h3>
+                        <p className="text-base italic">Review the strenghts, weakness, opportunities and threats of your business or product.</p>
+                    </div>
+                    <div className="card-home">
+                        <h3 className="text-lg font-semibold">Product Canvas</h3>
+                        <p className="text-base italic">Get a better view of your product, identifying your value proposition and opportunities.</p>
+                    </div>
+                    <div className="card-home">
+                        <h3 className="text-lg font-semibold">Your Canvas</h3>
+                        <p className="text-base italic">Can't find a canvas that fit your needs, create your own here.</p>
+                    </div>
+                </div>
+            </div>
+        </Layout>
+    );
 }

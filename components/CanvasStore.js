@@ -1,130 +1,36 @@
-import { useReducer, useContext, createContext } from 'react';
-import { ADD_CARD, MOVE_CARD, EDIT_CARD, REMOVE_CARD } from './ActionTypes';
+import { useReducer, useContext, useEffect, createContext } from 'react';
+import type from './ActionTypes';
+import { useLocalStorage } from './LocalStorage';
 
 const CanvasStateContext = createContext();
 const CanvasDispatchContext = createContext();
 
-const initialState = {
-    name: 'Meu Canvas',
-    type: 'business_model_canvas',
-    tiles: [
+const initialAppState = {
+    isDarkMode: false,
+    canvas: undefined,
+    availableTemplates: [
         {
-            id: 'BMC_PARCERIAS',
-            title: 'Parcerias Principais',
-            size: 'is-one-quarter',
-            cards: [
-                {
-                    id: 'BMC_PARCERIAS-0',
-                    content: 'Lorem Ipsum Dolor Sit Amet'
-                },
-                {
-                    id: 'BMC_PARCERIAS-1',
-                    content: 'Viajando pra Brasilia'
-                }
+            name: '',
+            title: 'Business Model Canvas',
+            description: '',
+            tags: [],
+            language: 'en-US',
+            tiles: [
+                { title: 'Key Partners', id: 'key-partners', description: '', cards: [] },
+                { title: 'Key Activities', id: 'key-activities', description: '', cards: [] },
+                { title: 'Key Resources', id: 'key-resources', description: '', cards: [] },
+                { title: 'Value Proposition', id: 'value-proposition', description: '', cards: [] },
+                { title: 'Client Relations', id: 'client-relations', description: '', cards: [] },
+                { title: 'Channels', id: 'channels', description: '', cards: [] },
+                { title: 'Client Segments', id: 'client-segments', description: '', cards: [] },
+                { title: 'Cost Structure', id: 'cost-structure', description: '', cards: [] },
+                { title: 'Revenue Sources', id: 'revenue-sources', description: '', cards: [] },
             ]
-        },
-        {
-            id: 'BMC_ATIVIDADES',
-            title: 'Atividades Principais',
-            size: 'is-one-quarter',
-            cards: [
-                {
-                    id: 'BMC_ATIVIDADES-0',
-                    content: 'Lorem Ipsum Dolor Sit Amet'
-                },
-                {
-                    id: 'BMC_ATIVIDADES-1',
-                    content: 'Viajando pra Brasilia'
-                }
-            ]
-        },
-        {
-            id: 'BMC_RECURSOS',
-            title: 'Recursos Principais',
-            size: 'is-one-quarter',
-            cards: [
-                {
-                    id: 'BMC_RECURSOS-0',
-                    content: 'Lorem Ipsum Dolor Sit Amet'
-                },
-                {
-                    id: 'BMC_RECURSOS-1',
-                    content: 'Viajando pra Brasilia'
-                }
-            ]
-        },
-        {
-            id: 'BMC_VALOR',
-            title: 'Proposta de Valor',
-            size: 'is-one-quarter',
-            cards: [
-                {
-                    id: 'BMC_VALOR-0',
-                    content: 'Lorem Ipsum Dolor Sit Amet'
-                },
-                {
-                    id: 'BMC_VALOR-1',
-                    content: 'Viajando pra Brasilia'
-                }
-            ]
-        },
-        {
-            id: 'BMC_RELACIONAMENTO',
-            title: 'Relacionamento com Clientes',
-            size: 'is-one-third',
-            cards: [
-                {
-                    id: 'BMC_RELACIONAMENTO-0',
-                    content: 'Lorem Ipsum Dolor Sit Amet'
-                },
-                {
-                    id: 'BMC_RELACIONAMENTO-1',
-                    content: 'Viajando pra Brasilia'
-                },
-                {
-                    id: 'BMC_RELACIONAMENTO-2',
-                    content: 'Lorem Ipsum Dolor Sit Amet'
-                },
-                {
-                    id: 'BMC_RELACIONAMENTO-3',
-                    content: 'Viajando pra Brasilia'
-                },
-                {
-                    id: 'BMC_RELACIONAMENTO-4',
-                    content: 'Viajando pra Brasilia'
-                },
-                {
-                    id: 'BMC_RELACIONAMENTO-5',
-                    content: 'Viajando pra Brasilia'
-                }
-            ]
-        },
-        {
-            id: 'BMC_CANAIS',
-            title: 'Canais',
-            size: 'is-one-third',
-            cards: []
-        },
-        {
-            id: 'BMC_SEGMENTOS',
-            title: 'Segmentos de Clientes',
-            size: 'is-one-third',
-            cards: []
-        },
-        {
-            id: 'BMC_CUSTOS',
-            title: 'Estrutura de Custos',
-            size: 'is-half',
-            cards: []
-        },
-        {
-            id: 'BMC_RECEITA',
-            title: 'Fontes de Receita',
-            size: 'is-half',
-            cards: []
         }
-    ]
-};
+    ],
+    archived: [],
+    starred: [],
+}
 
 const utils = {
     findIndex: (arr, tileId) => arr.findIndex(a => a.id === tileId),
@@ -133,34 +39,40 @@ const utils = {
 const reducer = (state, action) => {
     if (action.type === 'TESTE') {
         let newState = state;
-        newState.name = action.payload;
+        newState.canvas.name = action.payload;
         return {...newState};
-    } else if (action.type === ADD_CARD) {
+    } else if (action.type === type.CREATE_CANVAS) {
+        let newState = state;
+        const { name, template } = action.payload;
+        newState.canvas = {...newState.availableTemplates[template]};
+        newState.canvas.name = name;
+        return {...newState};
+    } else if (action.type === type.ADD_CARD) {
         let newState = state;
         const { body, tileId } = action.payload;
-        const tileIndex = newState.tiles.findIndex(t => t.id === tileId);
+        const tileIndex = newState.canvas.tiles.findIndex(t => t.id === tileId);
         console.log(tileIndex);
-        newState.tiles[tileIndex].cards.push({ content: body });
+        newState.canvas.tiles[tileIndex].cards.push({ content: body });
         return {...newState};
-    } else if (action.type === EDIT_CARD) {
+    } else if (action.type === type.EDIT_CARD) {
         let newState = state;
         const { cardId, body, tileId } = action.payload;
-        const tileIndex = newState.tiles.findIndex(t => t.id === tileId);
-        newState.tiles[tileIndex].cards[cardId].content = body;
+        const tileIndex = newState.canvas.tiles.findIndex(t => t.id === tileId);
+        newState.canvas.tiles[tileIndex].cards[cardId].content = body;
         return {...newState};
-    } else if (action.type === MOVE_CARD) {
+    } else if (action.type === type.MOVE_CARD) {
         let newState = state;
         const { cardId, tileId } = action.payload;
-        const tileIndex = newState.tiles.findIndex(t => t.id === tileId);
-        let cardContent = newState.tiles[tileIndex].cards[cardId].content;
+        const tileIndex = newState.canvas.tiles.findIndex(t => t.id === tileId);
+        let cardContent = newState.canvas.tiles[tileIndex].cards[cardId].content;
         // newState.tiles[]
-        newState.tiles[tileId].cards[cardId].content = body;
+        newState.canvas.tiles[tileId].cards[cardId].content = body;
         return {...newState};
-    } else if (action.type === REMOVE_CARD) {
+    } else if (action.type === type.REMOVE_CARD) {
         let newState = state;
         const { cardId, tileId } = action.payload;
-        const tileIndex = newState.tiles.findIndex(t => t.id === tileId);
-        newState.tiles[tileIndex].cards.splice(cardId, 1);
+        const tileIndex = newState.canvas.tiles.findIndex(t => t.id === tileId);
+        newState.canvas.tiles[tileIndex].cards.splice(cardId, 1);
         return {...newState};
     } else {
         return {...state};
@@ -168,7 +80,13 @@ const reducer = (state, action) => {
 }
 
 export const CanvasProvider = ({ children }) => {
-    const [state, dispatch] = useReducer(reducer, initialState);
+    const [appState, setAppState] = useLocalStorage("modelcanvas", initialAppState);
+    const [state, dispatch] = useReducer(reducer, appState);
+
+    useEffect(() => {
+        setAppState(state);
+    }, [state]);
+
     return (
         <CanvasDispatchContext.Provider value={dispatch}>
             <CanvasStateContext.Provider value={state}>

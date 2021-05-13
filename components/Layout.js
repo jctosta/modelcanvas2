@@ -4,12 +4,12 @@ import Image from 'next/image';
 import { useState } from 'react';
 // import Sidebar from './Sidebar';
 // import SidebarMenu from './SidebarMenu';
-import { MenuIcon, XIcon, InformationCircleIcon, SaveAsIcon } from '@heroicons/react/solid';
+import { MenuIcon, XIcon, InformationCircleIcon, SaveAsIcon, HomeIcon, ViewGridAddIcon, SunIcon, MoonIcon } from '@heroicons/react/solid';
 import { motion } from 'framer-motion';
 import FloatMenu from './FloatMenu';
 
 
-export default function Layout({ children, canvasName, canvasTiles }) {
+export default function Layout({ children }) {
 
     // Usando react hooks para controlar a visibilidade do menu
     const [hiddenSidebar, setHiddenSidebar] = useState(false);
@@ -17,11 +17,11 @@ export default function Layout({ children, canvasName, canvasTiles }) {
     const [modal, setModal] = useState(false);
 
     const toggleDarkMode = () => {
-        if (document.body.classList.contains("dark-mode")) {
-            document.body.classList.remove("dark-mode");
+        if (document.body.classList.contains("dark")) {
+            document.body.classList.remove("dark");
             setDarkMode(false);
         } else {
-            document.body.classList.add("dark-mode");
+            document.body.classList.add("dark");
             setDarkMode(true);
         }
     }
@@ -46,7 +46,7 @@ export default function Layout({ children, canvasName, canvasTiles }) {
                 <link rel="preconnect" href="https://fonts.gstatic.com" />
                 <link href="https://fonts.googleapis.com/css2?family=Titillium+Web:ital,wght@0,200;0,300;0,400;0,600;0,700;0,900;1,200;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet" /> 
             </Head>
-            <div className="flex flex-row w-full max-h-full">
+            <div className="flex flex-row w-full max-h-full bg-sepia-50 dark:bg-steel-700">
             {/* <motion.div className={`flex-grow ${hiddenSidebar ? "hidden" : "fixed z-10 md:static block"} md:flex-none w-5/6 md:w-1/6 h-screen bg-gray-900 shadow-lg`} animate={hiddenSidebar ? "open" : "closed"} variants={variants}> */}
                 <motion.div className={`flex-grow fixed z-20 md:static md:flex-none w-5/6 md:w-1/6 h-screen bg-steel-800 shadow-lg`} animate={hiddenSidebar ? "open" : "close"} variants={variants}>
                     <div className="flex flex-col">
@@ -79,16 +79,16 @@ export default function Layout({ children, canvasName, canvasTiles }) {
                 <div className="flex-grow self-stretch md:flex-grow h-screen">
                     <div className="flex flex-col w-full flex-1">
                         <div className="flex-none fixed w-full z-0">
-                            <div className="flex flex-row items-center bg-sepia-50 dark:bg-steel-800 w-full border-b-2 border-gray-900 border-opacity-10">
+                            <div className="flex flex-row items-center bg-sepia-50 dark:bg-steel-800 w-full border-b-2 border-gray-900 border-opacity-10 bg-opacity-80 ">
                                 <div className="flex-none p-4 w-1/4">
                                     <div className="flex flex-row">
                                         <button onClick={() => toggleSidebar()}>
                                             {
                                                 hiddenSidebar
                                                 ?
-                                                <XIcon className="h-5 w-5 text-gray-400" />
+                                                <XIcon className="h-5 w-5 text-gray-900 dark:text-gray-100" />
                                                 :
-                                                <MenuIcon className="h-5 w-5 text-gray-400" />
+                                                <MenuIcon className="h-5 w-5 text-gray-900 dark:text-gray-100" />
                                             }
                                         </button>
                                         {/* <FloatMenu>
@@ -96,14 +96,30 @@ export default function Layout({ children, canvasName, canvasTiles }) {
                                         </FloatMenu> */}
                                     </div>
                                 </div>
-                                <div className="flex-grow w-2/4 text-center p-4">
-                                    <Image src="/LogoModelCanvasApp.svg" alt="Logotipo do Aplicativo Model Canvas" width={200} height={34.65} />
+                                <div className="flex-grow w-2/4 text-center">
+                                    <Image src="/ModelCanvasLogo.svg" alt="Logotipo do Aplicativo Model Canvas" width={200} height={34.65} />
                                     {/* <Image src="/LogoModelCanvasApp.svg" alt="Logotipo do Aplicativo Model Canvas" layout="fill" /> */}
                                     {/* <h2 className="p-3 font-extrabold text-base uppercase text-gray-800 truncate overflow-ellipsis">ModelCanvas</h2> */}
                                 </div>
                                 <div className="flex-none p-4 w-1/4">
                                     <div className="flex flex-row-reverse">
-                                        <a className="px-2 flex items-center space-x-2"><SaveAsIcon className="h-5 w-5 text-gray-900" /><span className="hidden md:inline">Export</span></a>
+                                        {/* <a className="px-2 flex items-center space-x-2"><SaveAsIcon className="h-5 w-5 text-gray-900" /><span className="hidden md:inline">Export</span></a> */}
+                                        <button className="px-2 flex items-center space-x-2 text-gray-900 dark:text-gray-100" onClick={() => toggleDarkMode()}>
+                                            <MoonIcon className="h-5 w-5 text-gray-900 dark:text-gray-100" />
+                                            <span className="hidden md:inline">Dark Mode</span>
+                                        </button>
+                                        <Link href="/canvas">
+                                            <a className="px-2 flex items-center space-x-2 text-gray-900 dark:text-gray-100">
+                                                <ViewGridAddIcon className="h-5 w-5 text-gray-900 dark:text-gray-100" />
+                                                <span className="hidden md:inline">Canvas</span>
+                                            </a>
+                                        </Link>
+                                        <Link href="/">
+                                            <a className="px-2 flex items-center space-x-2 text-gray-900 dark:text-gray-100">
+                                                <HomeIcon className="h-5 w-5 text-gray-900 dark:text-gray-100" />
+                                                <span className="hidden md:inline">Home</span>
+                                            </a>
+                                        </Link>
                                     </div>
                                     {/* <input type="text" className="rounded-full border-gray-300 p-2 my-2 text-gray-800" /> */}
                                 </div>
