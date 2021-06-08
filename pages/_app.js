@@ -5,7 +5,7 @@ import 'tailwindcss/tailwind.css';
 import Layout from '../components/Layout';
 import Head from 'next/head';
 
-import { CanvasProvider } from '../components/CanvasStore';
+import { CanvasProvider } from '../components/DataStore';
 
 
 function MyApp({ Component, pageProps }) {

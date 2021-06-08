@@ -1,25 +1,25 @@
 import PropTypes from 'prop-types';
-import { useReducer, useContext, useEffect, createContext } from 'react';
+import { useReducer, useContext, useEffect, createContext, useState } from 'react';
 import type from './ActionTypes';
-import { useLocalStorage } from './LocalStorage';
+import canvasUtils from '../lib/CanvasUtils';
+import CanvasHandler from '../lib/CanvasHandler';
+import App from '../lib/app';
+import Block from '../lib/block';
 
 const CanvasStateContext = createContext();
 const CanvasDispatchContext = createContext();
-
-const canvasUtils = {
-	generateID: () => '_' + Math.random().toString(36).substr(2, 9),
-};
 
 const initialAppState = {
 	isDarkMode: false,
 	canvas: undefined,
 	availableTemplates: [
 		{
-			name: '',
-			title: 'Business Model Canvas',
-			description: '',
-			tags: [],
+			id: undefined,
+			name: undefined,
+			description: undefined,
+			type: 'Business Model Canvas',
 			language: 'en-US',
+			tags: [],
 			tiles: [
 				{ title: 'Key Partners', id: 'key-partners', description: '', cards: [] },
 				{ title: 'Key Activities', id: 'key-activities', description: '', cards: [] },
@@ -33,7 +33,7 @@ const initialAppState = {
 			]
 		}
 	],
-	archived: [],
+	archived: new Map(),
 	starred: [],
 };
 
@@ -44,51 +44,114 @@ const reducer = (state, action) => {
 		return {...newState};
 	} else if (action.type === type.CREATE_CANVAS) {
 		let newState = state;
-		const { name, template } = action.payload;
-		newState.canvas = {...newState.availableTemplates[template]};
-		newState.canvas.name = name;
+		
+		const { name, description, template } = action.payload;
+		
+		let newCanvas = {...newState.availableTemplates[template]};
+		newCanvas.name = name;
+		newCanvas.description = description;
+		let newCanvasId = canvasUtils.generateID();
+		
+		newState.archived.set(newCanvasId, newCanvas);
+		newState.canvas = newCanvasId;
+		
 		return {...newState};
 	} else if (action.type === type.ADD_CARD) {
 		let newState = state;
-		const { body, tileId } = action.payload;
-		const tileIndex = newState.canvas.tiles.findIndex(t => t.id === tileId);
-		newState.canvas.tiles[tileIndex].cards.push({ id: canvasUtils.generateID(), content: body });
+		const { body, canvasId, tileId } = action.payload;
+
+		// const tempCanvas = newState.archived.get(canvasId);
+
+		const tempCanvas = CanvasHandler.addCard(newState.archived.get(canvasId), tileId, body);
+
+		// const tileIndex = tempCanvas.tiles.findIndex(t => t.id === tileId);
+		// tempCanvas.tiles[tileIndex].cards.push({ id: canvasUtils.generateID(), content: body });
+
+		newState.archived.set(canvasId, tempCanvas);
+
 		return {...newState};
 	} else if (action.type === type.EDIT_CARD) {
+
 		let newState = state;
-		const { cardId, body, tileId } = action.payload;
-		const tileIndex = newState.canvas.tiles.findIndex(t => t.id === tileId);
-		const cardIndex = newState.canvas.tiles[tileIndex].cards.findIndex(c => c.id === cardId);
-		newState.canvas.tiles[tileIndex].cards[cardIndex].content = body;
+
+		const { canvasId, cardId, body, tileId } = action.payload;
+
+		// const tempCanvas = newState.archived.get(canvasId);
+
+		const tempCanvas = CanvasHandler.editCard(newState.archived.get(canvasId), tileId, cardId, body);
+
+		// const tileIndex = tempCanvas.tiles.findIndex(t => t.id === tileId);
+		// const cardIndex = tempCanvas.tiles[tileIndex].cards.findIndex(c => c.id === cardId);
+		// tempCanvas.tiles[tileIndex].cards[cardIndex].content = body;
+
+		newState.archived.set(canvasId, tempCanvas);
+
 		return {...newState};
 	} else if (action.type === type.MOVE_CARD) {
 		let newState = state;
-		const { cardId, tileId } = action.payload;
-		const tileIndex = newState.canvas.tiles.findIndex(t => t.id === tileId);
-		const cardIndex = newState.canvas.tiles[tileIndex].cards.findIndex(c => c.id === cardId);
-		let cardContent = newState.canvas.tiles[tileIndex].cards[cardIndex].content;
-		newState.canvas.tiles[tileId].cards[cardId].content = cardContent;
+		
+		const { canvasId, cardId, tileId } = action.payload;
+		const tempCanvas = newState.archived.get(canvasId);
+
+		const tileIndex = tempCanvas.tiles.findIndex(t => t.id === tileId);
+		const cardIndex = tempCanvas.tiles[tileIndex].cards.findIndex(c => c.id === cardId);
+		let cardContent = tempCanvas.tiles[tileIndex].cards[cardIndex].content;
+
+		tempCanvas.tiles[tileId].cards[cardId].content = cardContent;
+
+		newState.archived.set(canvasId, tempCanvas);
+
 		return {...newState};
 	} else if (action.type === type.REMOVE_CARD) {
 		let newState = state;
-		const { cardId, tileId } = action.payload;
-		const tileIndex = newState.canvas.tiles.findIndex(t => t.id === tileId);
-		const cardIndex = newState.canvas.tiles[tileIndex].cards.findIndex(c => c.id === cardId);
-		newState.canvas.tiles[tileIndex].cards.splice(cardIndex, 1);
+
+		const { canvasId, cardId, tileId } = action.payload;
+
+		const tempCanvas = newState.archived.get(canvasId);
+
+		const tileIndex = tempCanvas.tiles.findIndex(t => t.id === tileId);
+		const cardIndex = tempCanvas.tiles[tileIndex].cards.findIndex(c => c.id === cardId);
+		tempCanvas.tiles[tileIndex].cards.splice(cardIndex, 1);
+
+		newState.archived.set(canvasId, tempCanvas);
+
+		return {...newState};
+	} else if (action.type === type.LOAD_CANVAS) {
+		let newState = action.value;
 		return {...newState};
 	} else {
 		return {...state};
 	}  
 };
 
-export const CanvasProvider = ({ children }) => {
-	
-	const [appState, setAppState] = useLocalStorage('modelcanvas', initialAppState);
+export const CanvasProvider = ({ children, storageKey }) => {
+
+	const [appState, setAppState] = useState(initialAppState);
+	const [started, setStarted] = useState(false);
 	const [state, dispatch] = useReducer(reducer, appState);
 
 	useEffect(() => {
-		setAppState(state);
-	});
+		if (started) {
+			// const newAppState = appState instanceof Function ? appState()
+			window.localStorage.setItem(storageKey, JSON.stringify(state, canvasUtils.replacer));
+			// setAppState(appState);
+		}
+	}, [storageKey, state, started]);
+
+	useEffect(() => {
+		const item = window.localStorage.getItem(storageKey);
+		dispatch({
+			type: type.LOAD_CANVAS,
+			value: (item !== undefined ? JSON.parse(item, canvasUtils.reviver) : initialAppState),
+		});
+		setStarted(true);
+		
+		// const item = window.localStorage.getItem(storageKey);
+		// item && setAppState(JSON.parse(item, canvasUtils.reviver));
+		// setAppState(item ? JSON.parse(item, canvasUtils.reviver) : initialAppState);
+	}, [storageKey]);
+
+	
 
 	return (
 		<CanvasDispatchContext.Provider value={dispatch}>
@@ -100,6 +163,7 @@ export const CanvasProvider = ({ children }) => {
 };
 
 CanvasProvider.propTypes = {
+	storageKey: PropTypes.string,
 	children: PropTypes.node
 };
 

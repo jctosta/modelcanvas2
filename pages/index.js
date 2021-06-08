@@ -1,10 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
-import { useCanvas } from '../components/CanvasStore';
 
 export default function Index() {
-	
-	const canvasStore = useCanvas();
 
 	return (
 		<>
@@ -18,7 +15,7 @@ export default function Index() {
 						<h1 className="text-5xl font-bold py-4">A better view for your business</h1>
 						<p className="text-xl font-normal py-4">A business canvas application, recommended for all types of needs.</p>
 						<div className="py-4">
-							<Link href="/canvas"><a className="bg-sunset-500 p-3 rounded-md text-white hover:bg-sunset-700">Getting Started...</a></Link>
+							<Link href="/dashboard"><a className="bg-sunset-500 p-3 rounded-md text-white hover:bg-sunset-700">Getting Started...</a></Link>
 						</div>
 					</div>
 					<div className="flex align-middle justify-center md:justify-end">
@@ -31,29 +28,6 @@ export default function Index() {
 					</div>
 				</div>
 			</div>
-			{
-				canvasStore.canvas 
-				&& 
-				<>
-					<h2>Active Canvas</h2>
-					<h4>{canvasStore.canvas.name}</h4>
-					<h6>{canvasStore.canvas.title}</h6>
-
-					<h2>Starred Canvases</h2>
-					<ul>
-						{
-							canvasStore.starred.forEach(s => <li>{s.name - s.title}</li>)
-						}
-					</ul>
-
-					<h2>Archived Canvases</h2>
-					<ul>
-						{
-							canvasStore.archived.forEach(a => <li>{a.name - a.title}</li>)
-						}
-					</ul>
-				</>
-			}
 			<div className="container max-w-5xl mx-auto text-gray-900 dark:text-gray-100">
 				<hr className="p-4" />
 				<h2 className="text-3xl p-4 font-bold">A canvas that fit your needs...</h2>
@@ -83,7 +57,7 @@ export default function Index() {
 						<p className="text-base italic">Can&apos;t find a canvas that fit your needs, create your own here.</p>
 					</div>
 				</div>
-			</div>
+			</div>		
 		</>
 	);
 }

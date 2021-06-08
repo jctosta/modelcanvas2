@@ -17,14 +17,74 @@ body {
     @apply shadow-sm font-medium bg-white dark:bg-steel-600 dark:text-white rounded-md border-steel-900 dark:border-steel-800 border-2 border-opacity-10 flex flex-col p-4;
 }
 
+.hover-effect {
+	@apply transform transition duration-500 hover:scale-105;
+}
+
 .btn-primary {
 	@apply bg-sunset-500 hover:bg-sunset-800 text-white focus:ring-offset-white focus:ring-sunset-500;
 }
 
 .btn-secondary {
-	@apply bg-gray-100 text-gray-900 hover:bg-gray-300 focus:ring-offset-gray-900 focus:ring-gray-100;
+	@apply bg-gray-100 text-gray-900 hover:bg-gray-300 focus:ring-offset-gray-100 focus:ring-gray-900;
 }
 
 .btn-dark {
 	@apply bg-gray-900 hover:bg-gray-700 text-white focus:ring-offset-white focus:ring-gray-900;
+}
+
+.btn-info {
+	@apply bg-teal-500 hover:bg-teal-700 text-white focus:ring-offset-white focus:ring-teal-500;
+}
+
+.btn-danger {
+	@apply bg-blush-700 hover:bg-blush-900 text-white focus:ring-offset-white focus:ring-blush-700;
+}
+
+.btn-warning {
+	@apply bg-yellow-300 hover:bg-yellow-500 text-gray-900 focus:ring-offset-white focus:ring-yellow-300;
+}
+
+.btn-transparent {
+	@apply text-gray-900 dark:text-gray-100 hover:text-sunset-500 dark:hover:text-sunset-500 focus:ring-offset-gray-900 focus:ring-gray-100;
+}
+
+.btn-small {
+	@apply py-1 px-3 space-x-1;
+}
+
+.btn-default {
+	@apply py-2 px-6 space-x-2;
+}
+
+.btn-large {
+	@apply py-3 px-12 space-x-2;
+}
+
+.btn-icon-only {
+	@apply p-1;
+}
+
+.color-primary {
+	@apply bg-sunset-500 hover:bg-sunset-800 text-white;
+}
+
+.color-secondary {
+	@apply bg-gray-100 text-gray-900 hover:bg-gray-300;
+}
+
+.color-dark {
+	@apply bg-gray-900 hover:bg-gray-700 text-white;
+}
+
+.color-info {
+	@apply bg-teal-500 hover:bg-teal-700 text-white;
+}
+
+.color-danger {
+	@apply bg-blush-700 hover:bg-blush-900 text-white;
+}
+
+.color-warning {
+	@apply bg-yellow-300 hover:bg-yellow-500 text-gray-900;
 }

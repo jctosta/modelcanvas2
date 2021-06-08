@@ -56,15 +56,7 @@ export default function Layout({ children }) {
 												</span>
 											</a>
 										</Link>
-										{/* <Link href="/dashboard">
-											<a className="px-2 flex items-center space-x-2 text-gray-900 dark:text-gray-100">
-												<HomeIcon className="h-5 w-5 text-gray-900 dark:text-gray-100" />
-												<span className="hidden md:inline">
-													Dashboard
-												</span>
-											</a>
-										</Link> */}
-										<Link href="/canvas">
+										<Link href="/dashboard">
 											<a className="px-2 flex items-center space-x-2 text-gray-900 dark:text-gray-100">
 												<ViewGridAddIcon className="h-5 w-5 text-gray-900 dark:text-gray-100" />
 												<span className="hidden md:inline">
