@@ -11,6 +11,7 @@
     "@headlessui/react": "^1.1.1",
     "@heroicons/react": "^1.0.1",
     "@tailwindcss/forms": "^0.3.2",
+    "@tailwindcss/typography": "^0.4.1",
     "browser-monads": "^1.0.0",
     "framer-motion": "^4.1.11",
     "next": "^10.2.3",
@@ -19,6 +20,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-redux": "^7.2.3",
+    "react-remark": "^2.0.3",
     "sass": "^1.32.8"
   },
   "devDependencies": {
