@@ -1,14 +1,16 @@
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import Head from 'next/head';
 import { useCanvas, useDispatchCanvas } from '../components/DataStore';
+import { useEffect, useState } from 'react';
 import CanvasContainer from '../components/Canvas';
 import CanvasTile from '../components/CanvasTile';
 import type from '../components/ActionTypes';
 import { useRouter } from 'next/router';
 import App from '../lib/app';
-// import Button from '../components/Button';
 import Button from '../components/ui/Button';
-import { PresentationChartBarIcon, PrinterIcon, SaveIcon } from '@heroicons/react/solid';
+import Anchor from '../components/ui/Anchor';
+import { snakeCase } from 'lodash';
+import { PresentationChartBarIcon, PrinterIcon, SaveIcon, DocumentTextIcon } from '@heroicons/react/solid';
 
 export default function Canvas() {
 
@@ -16,10 +18,16 @@ export default function Canvas() {
 	const dispatch = useDispatchCanvas();
 	const canvasStore = useCanvas();
 
+	const [markdown, setMarkdown] = useState(undefined);
+
 	const { id } = router.query;
 
 	const canvas = canvasStore.blocks.get(id);
-	// console.log(canvas);
+
+	useEffect(() => {
+		if (!router.isReady) return;
+		setMarkdown(App.createMarkdown(canvasStore, canvas));
+	}, [router.isReady, canvasStore, canvas]);
 
 	const handleAddCard = (tileId, body) => {
 		dispatch({
@@ -51,6 +59,21 @@ export default function Canvas() {
 		});
 	};
 
+	const handleShare = (evt) => {
+		evt.preventDefault();
+		if (navigator.share) {
+			navigator.share({
+				title: 'Model Canvas',
+				text: 'Saiba mais sobre o ModelCanvas.',
+				url: 'https://modelcanvas.vercel.app',
+			})
+				.then(() => console.log('Compartilhado com sucesso.'))
+				.catch((error) => console.error('Erro ao compartilhar', error));
+		} else {
+			window.alert('Você está usando o Firefox, no share for you!!!');
+		}
+	};
+
 	return (
 		<>
 			<Head>
@@ -67,16 +90,28 @@ export default function Canvas() {
 							{canvas.properties.description && <p>{canvas.properties.description}</p>}
 						</div>
 						<div className="flex items-center space-x-2">
-							<Button 
-								variant={Button.variant.WARNING} 
-								size={Button.size.SMALL}
-								icon={PresentationChartBarIcon}
+							<Anchor 
+								variant={Anchor.variant.WARNING} 
+								size={Anchor.size.SMALL} 
+								icon={PresentationChartBarIcon} 
+								href={`/remark.html?markdown=${encodeURIComponent(markdown)}`}
+								target={Anchor.target.BLANK}
 							>
-								Export as Presentation...
-							</Button>
+								Export as Presentation
+							</Anchor>
+							<Anchor
+								variant={Anchor.variant.DARK}
+								size={Anchor.size.SMALL}
+								icon={DocumentTextIcon}
+								href={`data:text/markdown;charset=utf-8,${encodeURIComponent(markdown)}`}
+								target={Anchor.target.SELF}
+								download={`${snakeCase(canvas.properties.name)}.md`}
+							>
+								Download as Markdown
+							</Anchor>
+							<Button variant={Button.variant.SECONDARY} size={Button.size.SMALL} onClick={handleShare}>Share</Button>
 							<Button variant={Button.variant.INFO} size={Button.size.SMALL} icon={PrinterIcon}>Print as PDF...</Button>
 							<Button variant={Button.variant.DANGER} size={Button.size.SMALL} icon={SaveIcon}>Download...</Button>
-							{/* <Button category="secondary" className="flex flex-row"><PresentationChartBarIcon className="h-5 w-5" /><span>Export Canvas as PDF</span></Button> */}							
 						</div>
 					</div>
 					{/* <div className="grid grid-cols-2 gap-4 py-4">

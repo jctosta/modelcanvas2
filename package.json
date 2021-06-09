@@ -14,6 +14,8 @@
     "@tailwindcss/typography": "^0.4.1",
     "browser-monads": "^1.0.0",
     "framer-motion": "^4.1.11",
+    "handlebars": "^4.7.7",
+    "lodash": "^4.17.21",
     "next": "^10.2.3",
     "next-pwa": "^5.2.21",
     "prop-types": "^15.7.2",
@@ -21,7 +23,8 @@
     "react-dom": "17.0.2",
     "react-redux": "^7.2.3",
     "react-remark": "^2.0.3",
-    "sass": "^1.32.8"
+    "sass": "^1.32.8",
+    "share-api-polyfill": "^1.0.21"
   },
   "devDependencies": {
     "autoprefixer": "^10.2.5",

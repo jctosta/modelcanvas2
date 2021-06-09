@@ -5,6 +5,7 @@ import 'tailwindcss/tailwind.css';
 import Layout from '../components/Layout';
 import Head from 'next/head';
 
+
 import { CanvasProvider } from '../components/DataStore';
 
 

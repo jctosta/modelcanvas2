@@ -30,6 +30,7 @@ export default function Slides() {
 			<article className="prose lg:prose-xl ">
 				{reactContent}
 			</article>
+			<iframe src="/remark.html" frameBorder="0" title="presentation"></iframe>
 		</div>
 	);
 }
