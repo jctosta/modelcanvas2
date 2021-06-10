@@ -4,7 +4,8 @@ import '../styles/globals.css';
 import 'tailwindcss/tailwind.css';
 import Layout from '../components/Layout';
 import Head from 'next/head';
-
+import { appWithTranslation } from 'next-i18next';
+// import '../lib/i18n';
 
 import { CanvasProvider } from '../components/DataStore';
 
@@ -35,4 +36,4 @@ MyApp.propTypes = {
 	pageProps: PropTypes.any
 };
 
-export default MyApp;
+export default appWithTranslation(MyApp);

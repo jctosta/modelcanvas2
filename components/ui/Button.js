@@ -39,7 +39,7 @@ Button.propTypes = {
 	children: PropTypes.node,
 	variant: PropTypes.string.isRequired,
 	size: PropTypes.string,
-	icon: PropTypes.element,
+	icon: PropTypes.elementType,
 	onClick: PropTypes.func,
 };
 

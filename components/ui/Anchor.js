@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import classNames from '../../lib/classNames';
+import { forwardRef } from 'react';
 
 const VARIANT_MAPS = {
 	PRIMARY: 'btn-primary',
@@ -23,18 +24,19 @@ const TARGET_MAPS = {
 	BLANK: '_blank',
 };
 
-function Anchor({ children, variant, size, target, download, icon, href }) {
+// eslint-disable-next-line react/display-name
+const Anchor = forwardRef(({ children, variant, size, target, download, icon, href }, ref) => {
 	let Icon = undefined;
 	if (icon) {
 		Icon = icon;
 	}
 	return (
-		<a href={href} target={target} download={download} className={classNames('w-auto inline-flex items-center text-base leading-6 font-normal border border-transparent rounded-md focus:ring-2 focus:ring-offset-2 focus:outline-none transition-colors duration-200', variant, size)}>
+		<a ref={ref} href={href} target={target} download={download} className={classNames('w-auto inline-flex items-center text-base leading-6 font-normal border border-transparent rounded-md focus:ring-2 focus:ring-offset-2 focus:outline-none transition-colors duration-200', variant, size)}>
 			{icon && <Icon className="h-5 w-5" />}
 			<span>{children}</span>
 		</a>
 	);
-}
+});
 
 Anchor.variant = VARIANT_MAPS;
 Anchor.size = SIZE_MAPS;
@@ -45,7 +47,7 @@ Anchor.propTypes = {
 	variant: PropTypes.string.isRequired,
 	size: PropTypes.string,
 	target: PropTypes.string,
-	icon: PropTypes.element,
+	icon: PropTypes.elementType,
 	href: PropTypes.string,
 	download: PropTypes.string,
 };

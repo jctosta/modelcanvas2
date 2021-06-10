@@ -11,12 +11,16 @@ import Button from '../components/ui/Button';
 import Anchor from '../components/ui/Anchor';
 import { snakeCase } from 'lodash';
 import { PresentationChartBarIcon, PrinterIcon, SaveIcon, DocumentTextIcon } from '@heroicons/react/solid';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 export default function Canvas() {
 
 	const router = useRouter();
 	const dispatch = useDispatchCanvas();
 	const canvasStore = useCanvas();
+
+	const { t } = useTranslation('common');
 
 	const [markdown, setMarkdown] = useState(undefined);
 
@@ -77,7 +81,7 @@ export default function Canvas() {
 	return (
 		<>
 			<Head>
-				<title>Model Canvas</title>
+				<title>{t('app-name')}</title>
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			{
@@ -154,3 +158,9 @@ Canvas.propTypes = {
 	// 	})),
 	// })
 };
+
+export const getStaticProps = async ({ locale }) => ({
+	props: {
+		...await serverSideTranslations(locale, ['common']),
+	},
+});
