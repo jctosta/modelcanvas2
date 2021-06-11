@@ -116,9 +116,9 @@ export default function Dashboard() {
 									<hr />
 									<div className="flex flex-row-reverse space-x-2 space-x-reverse pt-3">
 										<Link href={{ pathname: '/canvas', query: { id: arr.id }, }} passHref={true}>
-											<Anchor variant={Anchor.variant.PRIMARY} size={Anchor.size.SMALL} icon={PencilAltIcon}>Editar</Anchor>
+											<Anchor variant={Anchor.variant.PRIMARY} size={Anchor.size.SMALL} icon={PencilAltIcon}>{t('dashboard-actions-button-edit-canvas')}</Anchor>
 										</Link>
-										<Button variant={Button.variant.SECONDARY} size={Button.size.SMALL} icon={DocumentDuplicateIcon}>Duplicate</Button>
+										<Button variant={Button.variant.SECONDARY} size={Button.size.SMALL} icon={DocumentDuplicateIcon}>{t('dashboard-actions-button-duplicate-canvas')}</Button>
 									</div>
 								</div>
 							)}
@@ -131,7 +131,7 @@ export default function Dashboard() {
 								<>
 									<div>
 										<div className="py-2">
-											<label htmlFor="canvasName">Name:</label>
+											<label htmlFor="canvasName">{t('dashboard-form-label-name')}</label>
 											<input 
 												type="text" 
 												className="rounded-md rounded-r-node flex-grow border-gray-300 p-3 w-full" 
@@ -140,7 +140,7 @@ export default function Dashboard() {
 											/>
 										</div>
 										<div className="py-2">
-											<label htmlFor="canvasDescription">Description:</label>
+											<label htmlFor="canvasDescription">{t('dashboard-form-label-description')}</label>
 											<textarea 
 												id="canvasDescription"
 												className="rounded-md rounded-r-node flex-grow border-gray-300 p-3 w-full" 
@@ -148,7 +148,7 @@ export default function Dashboard() {
 												value={canvasDescription}></textarea>
 										</div>
 										<div className="py-2">
-											<label htmlFor="canvasTemplate">Template:</label>
+											<label htmlFor="canvasTemplate">{t('dashboard-form-label-template')}</label>
 											<select 
 												id="canvasTemplate" 
 												className="rounded-md rounded-r-node flex-grow p-3 w-full border-gray-300"
@@ -162,8 +162,8 @@ export default function Dashboard() {
 											</select>
 										</div>
 										<div className="py-2 flex flex-row-reverse space-x-2 space-x-reverse">
-											<Button variant={Button.variant.PRIMARY} onClick={handleNewCanvas}>Create</Button>
-											<Button variant={Button.variant.SECONDARY} onClick={() => setFormVisible(false)}>Cancel</Button>
+											<Button variant={Button.variant.PRIMARY} onClick={handleNewCanvas}>{t('dashboard-form-button-create')}</Button>
+											<Button variant={Button.variant.SECONDARY} onClick={() => setFormVisible(false)}>{t('dashboard-form-button-cancel')}</Button>
 										</div>
 									</div>
 								</>
@@ -172,7 +172,7 @@ export default function Dashboard() {
 								!formVisible
 								&&
 								<div className="flex flex-row space-x-2">
-									<Button variant={Button.variant.PRIMARY} icon={SparklesIcon} onClick={() => setFormVisible(true)}>{t('dashboard-actions-button-create-canvas')}</Button>									
+									<Button variant={Button.variant.PRIMARY} icon={SparklesIcon} onClick={() => setFormVisible(true)}>{t('dashboard-actions-button-create-canvas')}</Button>
 								</div>
 							}
 						</div>

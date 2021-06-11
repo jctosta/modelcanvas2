@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import {
 	HomeIcon,
@@ -9,11 +10,14 @@ import {
 	SunIcon,
 	MoonIcon,
 } from '@heroicons/react/solid';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'next-i18next';
+// import { useTranslation } from 'react-i18next';
 
 export default function Layout({ children }) {
 	const [darkMode, setDarkMode] = useState(false);
-	const [t, i18n] = useTranslation();
+	// const [t, i18n] = useTranslation();
+	const router = useRouter();
+	const { t } = useTranslation('common');
 	
 	const toggleDarkMode = () => {
 		if (document.body.classList.contains('dark')) {
@@ -86,7 +90,13 @@ export default function Layout({ children }) {
 													<MoonIcon className="h-5 w-5 text-gray-900 dark:text-gray-100" />
 											}
 											<span className="hidden md:inline">{t('layout-dark-mode')}</span>
-										</button>										
+										</button>
+										<Link href={router.asPath} locale={'en'}>
+											<a className="px-2">EN</a>
+										</Link>
+										<Link href={router.asPath} locale={'pt'}>
+											<a className="px-2">PT</a>
+										</Link>
 									</div>
 								</div>
 							</div>

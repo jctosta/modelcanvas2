@@ -4,11 +4,13 @@ import { DotsVerticalIcon } from '@heroicons/react/solid';
 import CanvasItem from './CanvasItem';
 // import Button from './Button';
 import Button from './ui/Button';
+import { useTranslation } from 'next-i18next';
 
 export default function CanvasTile( {id, title, description, cards, addCard, editCard, removeCard} ) {
     
 	const [cardInput, setCardInput] = useState('');
 	const [formVisible, setFormVisible] = useState(false);
+	const { t } = useTranslation('common');
 
 	const handleAddCardInline = (evt) => {
 		evt.preventDefault();
@@ -46,8 +48,8 @@ export default function CanvasTile( {id, title, description, cards, addCard, edi
 							<textarea className="rounded-md rounded-r-node flex-grow border-gray-300 p-3 w-full" onChange={e => setCardInput(e.target.value)} value={cardInput}></textarea>
 						</div>
 						<div className="mt-4 flex flex-row-reverse space-x-2 space-x-reverse">
-							<Button variant={Button.variant.PRIMARY} size={Button.size.SMALL} onClick={handleAddCardInline}>Save</Button>
-							<Button variant={Button.variant.SECONDARY} size={Button.size.SMALL} onClick={() => setFormVisible(false)}>Cancel</Button>
+							<Button variant={Button.variant.PRIMARY} size={Button.size.SMALL} onClick={handleAddCardInline}>{t('canvas-tile-button-save')}</Button>
+							<Button variant={Button.variant.SECONDARY} size={Button.size.SMALL} onClick={() => setFormVisible(false)}>{t('canvas-tile-button-cancel')}</Button>
 						</div>
 					</div>
 				}
@@ -56,7 +58,7 @@ export default function CanvasTile( {id, title, description, cards, addCard, edi
 						{
 							!formVisible
 							&&
-							<Button variant={Button.variant.PRIMARY} onClick={() => setFormVisible(true)}>Add Card</Button>
+							<Button variant={Button.variant.PRIMARY} onClick={() => setFormVisible(true)}>{t('canvas-tile-button-addcard')}</Button>
 						}
 					</div>
 				</div>

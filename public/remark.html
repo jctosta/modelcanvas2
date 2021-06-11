@@ -22,7 +22,7 @@
 		const urlParams = new URLSearchParams(window.location.search);
 		const markdown = urlParams.get('markdown');
       	const slideshow = remark.create({
-			source: markdown,
+			source: atob(markdown),
 			ratio: '16:9',
 		});
     </script>

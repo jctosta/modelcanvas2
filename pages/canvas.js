@@ -22,7 +22,7 @@ export default function Canvas() {
 
 	const { t } = useTranslation('common');
 
-	const [markdown, setMarkdown] = useState(undefined);
+	const [markdown, setMarkdown] = useState('');
 
 	const { id } = router.query;
 
@@ -67,14 +67,14 @@ export default function Canvas() {
 		evt.preventDefault();
 		if (navigator.share) {
 			navigator.share({
-				title: 'Model Canvas',
-				text: 'Saiba mais sobre o ModelCanvas.',
+				title: t('share-title'),
+				text: t('share-text'),
 				url: 'https://modelcanvas.vercel.app',
 			})
-				.then(() => console.log('Compartilhado com sucesso.'))
-				.catch((error) => console.error('Erro ao compartilhar', error));
+				.then(() => console.log(t('share-success')))
+				.catch((error) => console.error(t('share-error'), error));
 		} else {
-			window.alert('Você está usando o Firefox, no share for you!!!');
+			window.alert(t('share-unavailable'));
 		}
 	};
 
@@ -98,10 +98,10 @@ export default function Canvas() {
 								variant={Anchor.variant.WARNING} 
 								size={Anchor.size.SMALL} 
 								icon={PresentationChartBarIcon} 
-								href={`/remark.html?markdown=${encodeURIComponent(markdown)}`}
+								href={`/remark.html?markdown=${encodeURIComponent(btoa(markdown))}`}
 								target={Anchor.target.BLANK}
 							>
-								Export as Presentation
+								{t('canvas-button-export-presentation')}
 							</Anchor>
 							<Anchor
 								variant={Anchor.variant.DARK}
@@ -111,11 +111,11 @@ export default function Canvas() {
 								target={Anchor.target.SELF}
 								download={`${snakeCase(canvas.properties.name)}.md`}
 							>
-								Download as Markdown
+								{t('canvas-button-download-markdown')}
 							</Anchor>
-							<Button variant={Button.variant.SECONDARY} size={Button.size.SMALL} onClick={handleShare}>Share</Button>
-							<Button variant={Button.variant.INFO} size={Button.size.SMALL} icon={PrinterIcon}>Print as PDF...</Button>
-							<Button variant={Button.variant.DANGER} size={Button.size.SMALL} icon={SaveIcon}>Download...</Button>
+							<Button variant={Button.variant.SECONDARY} size={Button.size.SMALL} onClick={handleShare}>{t('canvas-button-share')}</Button>
+							<Button variant={Button.variant.INFO} size={Button.size.SMALL} icon={PrinterIcon}>{t('canvas-button-print-pdf')}</Button>
+							<Button variant={Button.variant.DANGER} size={Button.size.SMALL} icon={SaveIcon}>{t('canvas-button-download')}</Button>
 						</div>
 					</div>
 					{/* <div className="grid grid-cols-2 gap-4 py-4">

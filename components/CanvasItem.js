@@ -2,12 +2,14 @@ import PropTypes from 'prop-types';
 import { XIcon, PencilIcon } from '@heroicons/react/solid';
 import { useState } from 'react';
 import Button from '../components/ui/Button';
+import { useTranslation } from 'next-i18next';
 // import EditableElement from './EditableElement';
 
 export default function CanvasItem( {id, parentId, content, editValue, removeCard} ) {
 
 	const [cardContent, setCardContent] = useState(content);
 	const [editMode, setEditMode] = useState(false);
+	const { t } = useTranslation('common');
 
 	const handleEditSave = (evt) => {
 		evt.preventDefault();
@@ -27,8 +29,8 @@ export default function CanvasItem( {id, parentId, content, editValue, removeCar
 					<textarea value={cardContent} className="rounded-md rounded-r-node flex-grow border-gray-300 p-3 w-full" onChange={e => setCardContent(e.target.value)} />
 				</div>
 				<div className="mt-4 flex flex-row-reverse">
-					<Button size={Button.size.SMALL} variant={Button.variant.PRIMARY} onClick={handleEditSave}>Update</Button>
-					<Button size={Button.size.SMALL} variant={Button.variant.SECONDARY} onClick={() => setEditMode(false)}>Cancel</Button>
+					<Button size={Button.size.SMALL} variant={Button.variant.PRIMARY} onClick={handleEditSave}>{t('canvas-item-button-update')}</Button>
+					<Button size={Button.size.SMALL} variant={Button.variant.SECONDARY} onClick={() => setEditMode(false)}>{t('canvas-item-button-cancel')}</Button>
 				</div>
 			</div>
 		);
@@ -42,8 +44,6 @@ export default function CanvasItem( {id, parentId, content, editValue, removeCar
 					<div className="flex flex-row">
 						<Button size={Button.size.ICON_ONLY} variant={Button.variant.TRANSPARENT} icon={PencilIcon} onClick={() => setEditMode(true)} />
 						<Button size={Button.size.ICON_ONLY} variant={Button.variant.TRANSPARENT} icon={XIcon} onClick={handleRemoveCard} />
-						{/* <PencilIcon className="h-5 w-5 text-gray-400" onClick={() => setEditMode(true)} /> */}
-						{/* <XIcon className="h-5 w-5 text-gray-400" onClick={handleRemoveCard} /> */}
 					</div>
 				</div>
 			</div>
