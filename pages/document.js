@@ -1,15 +1,12 @@
-import Head from 'next/head';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useRemark } from 'react-remark';
 import { useRouter } from 'next/router';
-import { useCanvas, useDispatchCanvas } from '../components/DataStore';
+import { useCanvas } from '../components/DataStore';
 import App from '../lib/app';
 
 export default function Slides() {
 	
 	const router = useRouter();
-	const dispatch = useDispatchCanvas();
 	const canvasStore = useCanvas();	
 
 	const [reactContent, setMarkdownSource] = useRemark({

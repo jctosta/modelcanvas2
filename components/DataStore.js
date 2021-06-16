@@ -91,9 +91,9 @@ const reducer = (state, action) => {
 
 export function CanvasProvider({ children }) {
 
-	const [appState, setAppState] = useState(initialAppState);
+	// const [appState, setAppState] = useState(initialAppState);
 	const [started, setStarted] = useState(false);
-	const [state, dispatch] = useReducer(reducer, appState);
+	const [state, dispatch] = useReducer(reducer, initialAppState);
 
 	useEffect(() => {
 		if (started) {

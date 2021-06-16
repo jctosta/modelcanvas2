@@ -19,6 +19,7 @@ export default function Create() {
 		});
 		setSectionName('');
 		setSectionDescription('');
+		setCanvasTiles([]);
 	};
 
 	const handleCanvasGenerate = e => {

@@ -9,7 +9,6 @@ import { useRouter } from 'next/router';
 import App from '../lib/app';
 import Button from '../components/ui/Button';
 import Anchor from '../components/ui/Anchor';
-import { snakeCase } from 'lodash';
 import { PresentationChartBarIcon, PrinterIcon, SaveIcon, DocumentTextIcon } from '@heroicons/react/solid';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -109,7 +108,7 @@ export default function Canvas() {
 								icon={DocumentTextIcon}
 								href={`data:text/markdown;charset=utf-8,${encodeURIComponent(markdown)}`}
 								target={Anchor.target.SELF}
-								download={`${snakeCase(canvas.properties.name)}.md`}
+								download={`${App.toSnakeCase(canvas.properties.name)}.md`}
 							>
 								{t('canvas-button-download-markdown')}
 							</Anchor>
