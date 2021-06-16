@@ -88,12 +88,12 @@ export default function Canvas() {
 				canvas
 				&&
 				<>
-					<div className="flex flex-row items-center justify-between">
+					<div className="flex flex-col md:flex-row items-center justify-between">
 						<div>
 							<h3 className="font-bold text-xl">{canvas.properties.name}</h3>
 							{canvas.properties.description && <p>{canvas.properties.description}</p>}
 						</div>
-						<div className="flex items-center space-x-2">
+						<div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 space-x-0 md:space-x-2">
 							<Anchor 
 								variant={Anchor.variant.WARNING} 
 								size={Anchor.size.SMALL} 
