@@ -3,7 +3,6 @@ import App from '../lib/app';
 import Block from '../lib/block';
 import types from './ActionTypes';
 import PropTypes from 'prop-types';
-import TemplatesManager from '../lib/templates';
 
 const CanvasStateContext = createContext();
 const CanvasDispatchContext = createContext();
@@ -28,7 +27,6 @@ const reducer = (state, action) => {
 			console.log(template);
 			let children = template.tiles.map(b => new Block(App.generateID(), 'tile', b, block.id));
 			console.log(children);
-			// let children = TemplatesManager.loadTemplate(TemplatesManager.templates.BUSINESS_MODEL_CANVAS, TemplatesManager.languages.ptBR ,block.id);
 			block.children = new Set();
 	
 			children.forEach(c => {
@@ -77,7 +75,6 @@ const reducer = (state, action) => {
 		let card = newState.blocks.get(cardId);
 		card.properties.content = body;
 		newState.blocks.set(card.id, card);
-		// newState.editBlock(cardId, card);
 		return {...newState};
 	} else if (action.type === types.REMOVE_CARD) {
 		let newState = state;
@@ -99,7 +96,6 @@ const reducer = (state, action) => {
 
 export function CanvasProvider({ children }) {
 
-	// const [appState, setAppState] = useState(initialAppState);
 	const [started, setStarted] = useState(false);
 	const [state, dispatch] = useReducer(reducer, initialAppState);
 
