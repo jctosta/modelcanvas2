@@ -16,7 +16,7 @@ const reducer = (state, action) => {
 	if (action.type === types.CREATE_CANVAS) {
 		let newState = state;
 
-		const { name, description } = action.payload;
+		const { name, description, template } = action.payload;
 
 		let block = new Block(
 			App.generateID(), 
@@ -24,13 +24,18 @@ const reducer = (state, action) => {
 			{ name, description, type: 'business model canvas' },
 		);
 
-		let children = TemplatesManager.loadTemplate(TemplatesManager.templates.BUSINESS_MODEL_CANVAS, TemplatesManager.languages.ptBR ,block.id);
-		block.children = new Set();
-
-		children.forEach(c => {
-			newState.blocks.set(c.id, c);
-			block.children.add(c.id);
-		});
+		if (template) {
+			console.log(template);
+			let children = template.tiles.map(b => new Block(App.generateID(), 'tile', b, block.id));
+			console.log(children);
+			// let children = TemplatesManager.loadTemplate(TemplatesManager.templates.BUSINESS_MODEL_CANVAS, TemplatesManager.languages.ptBR ,block.id);
+			block.children = new Set();
+	
+			children.forEach(c => {
+				newState.blocks.set(c.id, c);
+				block.children.add(c.id);
+			});
+		}
 
 		newState.blocks.set(block.id, block);
 
@@ -80,6 +85,9 @@ const reducer = (state, action) => {
 		let card = newState.blocks.get(cardId);
 		newState.blocks.get(card.parent).children.delete(cardId);
 		newState.blocks.delete(cardId);
+		return {...newState};
+	} else if (action.type === types.RESET_DATABASE) {
+		let newState = initialAppState;
 		return {...newState};
 	} else if (action.type === types.LOAD_CANVAS) {
 		let newState = action.value;

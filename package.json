@@ -12,8 +12,12 @@
     "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next-build"
   },
   "dependencies": {
+    "@chakra-ui/react": "^1.6.4",
+    "@emotion/react": "^11.4.0",
+    "@emotion/styled": "^11.3.0",
     "@headlessui/react": "^1.2.0",
     "@heroicons/react": "^1.0.1",
+    "browser-fs-access": "^0.17.3",
     "framer-motion": "^4.1.17",
     "i18next": "^20.3.1",
     "i18next-browser-languagedetector": "^6.1.1",
