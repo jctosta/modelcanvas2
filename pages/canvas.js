@@ -7,11 +7,90 @@ import CanvasTile from '../components/CanvasTile';
 import type from '../components/ActionTypes';
 import { useRouter } from 'next/router';
 import App from '../lib/app';
-import Button from '../components/ui/Button';
-import Anchor from '../components/ui/Anchor';
+import MyButton from '../components/ui/Button';
+import MyAnchor from '../components/ui/Anchor';
 import { PresentationChartBarIcon, PrinterIcon, SaveIcon, DocumentTextIcon } from '@heroicons/react/solid';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import {
+	Box,
+	Heading,
+	Text,
+	Button,
+	SimpleGrid,
+	Divider,
+	Stack,
+	VisuallyHidden,
+	FormControl,
+	FormLabel,
+	FormHelperText,
+	Input,
+	Textarea,
+	useRadio,
+	HStack,
+	useRadioGroup,
+	Icon,
+	Flex,
+	Spacer,
+	IconButton,
+	LinkBox,
+	LinkOverlay,
+	Grid,
+	GridItem,
+	Editable,
+	EditablePreview,
+	EditableInput,
+} from '@chakra-ui/react';
+
+const CanvasCardForm = ({ id, addCard }) => {
+	const [displayForm, setDisplayForm] = useState(false);
+	const [cardContent, setCardContent] = useState('');
+	
+	const handleAddCard = (evt) => {
+		evt.preventDefault();
+		addCard(id, cardContent);
+		setCardContent('');
+		setDisplayForm(false);
+	};
+
+	return (
+		<Box>
+			{
+				displayForm
+					?
+					<Box>
+						<FormControl>
+							<FormLabel>Content</FormLabel>
+							<Textarea onChange={(e) => setCardContent(e.target.value)} value={cardContent} bg="white"></Textarea>
+						</FormControl>
+						<Button variant="solid" colorScheme="brand" onClick={handleAddCard}>Create</Button>
+					</Box>
+					:
+					<Box>
+						<Button variant="solid" colorScheme="brand" onClick={() => setDisplayForm(true)}>Add Card</Button>
+					</Box>
+			}
+		</Box>
+	);
+};
+
+const EditableCard = ({ parentId, id, content, editCard }) => {
+	const [cardContent, setCardContent] = useState(content);
+
+	const handleEditCard = () => {
+		editCard(parentId, id, cardContent);
+	};
+
+	return (
+		<Box py="2" bg="gray.100" rounded="md" px="4" my="4">
+			<Editable defaultValue={cardContent} onSubmit={handleEditCard} onChange={(value) => setCardContent(value)}>
+				<EditablePreview />
+				<EditableInput />
+			</Editable>
+			<Text textAlign="right" fontSize="xs" fontStyle="italic">Edited</Text>
+		</Box>
+	);
+};
 
 export default function Canvas() {
 
@@ -77,6 +156,8 @@ export default function Canvas() {
 		}
 	};
 
+	console.log(canvasStore);
+
 	return (
 		<>
 			<Head>
@@ -87,40 +168,76 @@ export default function Canvas() {
 				canvas
 				&&
 				<>
+					<Grid templateRows={{ base: 'auto', sm: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)', xl: 'repeat(2, 1fr)' }} templateColumns={{ base: 'auto', sm: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)', xl: 'repeat(5, 1fr)' }} gap={4}>
+						{App.listChildren(canvasStore, canvas).map(t => (
+							<GridItem 
+								key={t.id} 
+								rowSpan={{ base: 'auto', sm: '1', xl: t.properties.rowSpan }} 
+								colSpan={{ base: 'auto', sm: '1', xl: t.properties.colSpan }} 
+								borderWidth="2px"
+								borderRadius="md"
+								borderColor="gray.200"
+								padding="4"
+								boxShadow="md"
+								backgroundColor="white">
+								<Heading fontSize="xl" py="2" fontStyle="">{t.properties.title}</Heading>
+								<Text fontSize="sm" fontStyle="italic" color="gray.700" py="2">{t.properties.description}</Text>
+								<Divider py="2" />
+								{App.listChildren(canvasStore, t).map(card => (
+									<EditableCard key={card.id} parentId={t.id} id={card.id} content={card.properties.content} editCard={handleEditCard} />
+								))}
+								<CanvasCardForm id={t.id} addCard={handleAddCard} />
+							</GridItem>
+							// <CanvasTile
+							// 	key={t.id}
+							// 	id={t.id}
+							// 	title={t.properties.title}
+							// 	description={t.properties.description}
+							// 	cards={App.listChildren(canvasStore, t)}
+							// 	addCard={handleAddCard}
+							// 	editCard={handleEditCard}
+							// 	removeCard={handleRemoveCard}
+							// />
+						))}
+						
+					</Grid>
+				</>
+			}
+			{/* {
+				canvas
+				&&
+				<>
 					<div className="flex flex-col md:flex-row items-center justify-between">
 						<div>
 							<h3 className="font-bold text-xl">{canvas.properties.name}</h3>
 							{canvas.properties.description && <p>{canvas.properties.description}</p>}
 						</div>
 						<div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 space-x-0 md:space-x-2">
-							<Anchor 
-								variant={Anchor.variant.WARNING} 
-								size={Anchor.size.SMALL} 
+							<MyAnchor 
+								variant={MyAnchor.variant.WARNING} 
+								size={MyAnchor.size.SMALL} 
 								icon={PresentationChartBarIcon} 
 								href={`/remark.html?markdown=${encodeURIComponent(btoa(markdown))}`}
-								target={Anchor.target.BLANK}
+								target={MyAnchor.target.BLANK}
 							>
 								{t('canvas-button-export-presentation')}
-							</Anchor>
-							<Anchor
-								variant={Anchor.variant.DARK}
-								size={Anchor.size.SMALL}
+							</MyAnchor>
+							<MyAnchor
+								variant={MyAnchor.variant.DARK}
+								size={MyAnchor.size.SMALL}
 								icon={DocumentTextIcon}
 								href={`data:text/markdown;charset=utf-8,${encodeURIComponent(markdown)}`}
-								target={Anchor.target.SELF}
+								target={MyAnchor.target.SELF}
 								download={`${App.toSnakeCase(canvas.properties.name)}.md`}
 							>
 								{t('canvas-button-download-markdown')}
-							</Anchor>
-							<Button variant={Button.variant.SECONDARY} size={Button.size.SMALL} onClick={handleShare}>{t('canvas-button-share')}</Button>
-							<Button variant={Button.variant.INFO} size={Button.size.SMALL} icon={PrinterIcon}>{t('canvas-button-print-pdf')}</Button>
-							<Button variant={Button.variant.DANGER} size={Button.size.SMALL} icon={SaveIcon}>{t('canvas-button-download')}</Button>
+							</MyAnchor>
+							<MyButton variant={MyButton.variant.SECONDARY} size={MyButton.size.SMALL} onClick={handleShare}>{t('canvas-button-share')}</MyButton>
+							<MyButton variant={MyButton.variant.INFO} size={MyButton.size.SMALL} icon={PrinterIcon}>{t('canvas-button-print-pdf')}</MyButton>
+							<MyButton variant={MyButton.variant.DANGER} size={MyButton.size.SMALL} icon={SaveIcon}>{t('canvas-button-download')}</MyButton>
 						</div>
 					</div>
-					{/* <div className="grid grid-cols-2 gap-4 py-4">
-					</div> */}
 					<hr className="p-4" />
-					{/* <div className="container mx-auto"></div> */}
 					<CanvasContainer>
 						{App.listChildren(canvasStore, canvas).map(t => (
 							<CanvasTile
@@ -136,7 +253,7 @@ export default function Canvas() {
 						))}
 					</CanvasContainer>
 				</>
-			}			
+			}			 */}
 		</>
 	);
 

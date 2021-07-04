@@ -1,14 +1,62 @@
-// import '../styles/app.scss';
 import PropTypes from 'prop-types';
-import '../styles/globals.css';
-import 'tailwindcss/tailwind.css';
-import Layout from '../components/Layout';
 import Head from 'next/head';
 import { appWithTranslation } from 'next-i18next';
-// import '../lib/i18n';
 
 import { CanvasProvider } from '../components/DataStore';
+import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import MainLayout from '../components/layout/Main';
 
+const theme = extendTheme({	
+	colors: {
+		brand: {
+			'50':  '#fdfcfa',
+			'100': '#fbf1e9',
+			'200': '#f7d2d0',
+			'300': '#eda5a6',
+			'400': '#e8757a',
+			'500': '#da5156',
+			'600': '#c0392b',
+			'700': '#99292b',
+			'800': '#6d1c1d',
+			'900': '#431210',
+		},
+		wood: {
+			'50': '#FFFFFF',
+			'100': '#FFFFFF',
+			'200': '#FFFFFF',
+			'300': '#FFFFFF',
+			'400': '#FFFFFF',
+			'500': '#F6F2EF',
+			'600': '#E4D7CE',
+			'700': '#D1BDAE',
+			'800': '#BFA28D',
+			'900': '#AD886C'
+		},
+		steel: {
+			'50':  '#f7f9f9',
+			'100': '#e8f1f7',
+			'200': '#cbe0ed',
+			'300': '#9dbfd6',
+			'400': '#6999b7',
+			'500': '#4f7798',
+			'600': '#405c7b',
+			'700': '#2c3e50',
+			'800': '#232e41',
+			'900': '#151c29',
+		}
+	},
+	styles: {
+		global: {
+			body: {
+				bg: 'wood.500',
+				color: 'gray.900'
+			},
+			a: {
+				color: 'brand.500',
+			}
+		}
+	},
+});
 
 function MyApp({ Component, pageProps }) {
 	return (
@@ -23,9 +71,11 @@ function MyApp({ Component, pageProps }) {
 				<meta name="theme-color" content="#da5156" />
 			</Head>
 			<CanvasProvider>
-				<Layout>
-					<Component {...pageProps} />
-				</Layout>
+				<ChakraProvider theme={theme}>
+					<MainLayout>
+						<Component {...pageProps} />
+					</MainLayout>
+				</ChakraProvider>
 			</CanvasProvider>		
 		</>
 	);
