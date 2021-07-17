@@ -40,6 +40,7 @@ import {
 	Editable,
 	EditablePreview,
 	EditableInput,
+	CloseButton,
 } from '@chakra-ui/react';
 
 const CanvasCardForm = ({ id, addCard }) => {
@@ -59,7 +60,7 @@ const CanvasCardForm = ({ id, addCard }) => {
 				displayForm
 					?
 					<Box>
-						<FormControl>
+						<FormControl py="3">
 							<FormLabel>Content</FormLabel>
 							<Textarea onChange={(e) => setCardContent(e.target.value)} value={cardContent} bg="white"></Textarea>
 						</FormControl>
@@ -83,11 +84,17 @@ const EditableCard = ({ parentId, id, content, editCard }) => {
 
 	return (
 		<Box py="2" bg="gray.100" rounded="md" px="4" my="4">
-			<Editable defaultValue={cardContent} onSubmit={handleEditCard} onChange={(value) => setCardContent(value)}>
-				<EditablePreview />
-				<EditableInput />
-			</Editable>
-			<Text textAlign="right" fontSize="xs" fontStyle="italic">Edited</Text>
+			<Flex>
+				<Stack>
+					<Editable defaultValue={cardContent} onSubmit={handleEditCard} onChange={(value) => setCardContent(value)}>
+						<EditablePreview />
+						<EditableInput />
+					</Editable>
+					<Text textAlign="left" fontSize="xs" fontStyle="italic">Edited</Text>
+				</Stack>
+				<Spacer />
+				<CloseButton />
+			</Flex>
 		</Box>
 	);
 };
