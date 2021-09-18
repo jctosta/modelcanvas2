@@ -7,7 +7,7 @@ export default function Header(props) {
 	const handleToggle = () => (isOpen ? onClose() : onOpen());
 
 	return (
-		<Flex as="nav" align="center" justify="space-between" wrap="wrap" padding="6" bg="brand.500" color="white" {...props}>
+		<Flex as="nav" align="center" justify="space-between" wrap="wrap" padding="3" bg="brand.500" color="white" {...props}>
 			<Flex align="center" mr="5">
 				<Link href="/" passHref={true}>
 					<ChakraLink>

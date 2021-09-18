@@ -18,7 +18,7 @@ export default function MainLayout( { children }) {
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
 			<Header pos="fixed" top="0" left="0" w="100%" zIndex={2} boxShadow="md" />
-			<Container maxW="full" my="28">
+			<Container maxW="full" my="20">
 				{children}
 			</Container>
 			<Box bg={useColorModeValue('steel.900', 'steel.50')} color={useColorModeValue('steel.100', 'steel.700')} pos="fixed" bottom="0" left="0" w="100%" zIndex={2}>

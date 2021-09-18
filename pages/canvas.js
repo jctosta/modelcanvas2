@@ -1,15 +1,10 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import Head from 'next/head';
 import { useCanvas, useDispatchCanvas } from '../components/DataStore';
 import { useEffect, useState } from 'react';
-import CanvasContainer from '../components/Canvas';
-import CanvasTile from '../components/CanvasTile';
 import type from '../components/ActionTypes';
 import { useRouter } from 'next/router';
 import App from '../lib/app';
-import MyButton from '../components/ui/Button';
-import MyAnchor from '../components/ui/Anchor';
-import { PresentationChartBarIcon, PrinterIcon, SaveIcon, DocumentTextIcon } from '@heroicons/react/solid';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import {
@@ -17,24 +12,13 @@ import {
 	Heading,
 	Text,
 	Button,
-	SimpleGrid,
 	Divider,
 	Stack,
-	VisuallyHidden,
 	FormControl,
 	FormLabel,
-	FormHelperText,
-	Input,
 	Textarea,
-	useRadio,
-	HStack,
-	useRadioGroup,
-	Icon,
 	Flex,
 	Spacer,
-	IconButton,
-	LinkBox,
-	LinkOverlay,
 	Grid,
 	GridItem,
 	Editable,
@@ -176,24 +160,24 @@ export default function Canvas() {
 				&&
 				<>
 					<Grid templateRows={{ base: 'auto', sm: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)', xl: 'repeat(2, 1fr)' }} templateColumns={{ base: 'auto', sm: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)', xl: 'repeat(5, 1fr)' }} gap={4}>
-						{App.listChildren(canvasStore, canvas).map(t => (
+						{App.listChildren(canvasStore, canvas).map(item => (
 							<GridItem 
-								key={t.id} 
-								rowSpan={{ base: 'auto', sm: '1', xl: t.properties.rowSpan }} 
-								colSpan={{ base: 'auto', sm: '1', xl: t.properties.colSpan }} 
+								key={item.id} 
+								rowSpan={{ base: 'auto', sm: '1', xl: item.properties.rowSpan }} 
+								colSpan={{ base: 'auto', sm: '1', xl: item.properties.colSpan }} 
 								borderWidth="2px"
 								borderRadius="md"
 								borderColor="gray.200"
 								padding="4"
 								boxShadow="md"
 								backgroundColor="white">
-								<Heading fontSize="xl" py="2" fontStyle="">{t.properties.title}</Heading>
-								<Text fontSize="sm" fontStyle="italic" color="gray.700" py="2">{t.properties.description}</Text>
-								<Divider py="2" />
-								{App.listChildren(canvasStore, t).map(card => (
-									<EditableCard key={card.id} parentId={t.id} id={card.id} content={card.properties.content} editCard={handleEditCard} />
+								<Heading fontSize="xl" py="2" fontStyle="">{item.properties.title}</Heading>
+								<Text fontSize="sm" fontStyle="italic" color="gray.700" py="2">{item.properties.description}</Text>
+								<Divider py="4" />
+								{App.listChildren(canvasStore, item).map(card => (
+									<EditableCard key={card.id} parentId={item.id} id={card.id} content={card.properties.content} editCard={handleEditCard} />
 								))}
-								<CanvasCardForm id={t.id} addCard={handleAddCard} />
+								<CanvasCardForm id={item.id} addCard={handleAddCard} />
 							</GridItem>
 							// <CanvasTile
 							// 	key={t.id}
@@ -266,21 +250,19 @@ export default function Canvas() {
 
 }
 
-Canvas.propTypes = {
-	// canvas: PropTypes.shape({
-	// 	name: PropTypes.string,
-	// 	description: PropTypes.string,
-	// 	type: PropTypes.string,
-	// 	language: PropTypes.string,
-	// 	tags: PropTypes.arrayOf(PropTypes.string),
-	// 	tiles: PropTypes.arrayOf(PropTypes.shape({
-	// 		title: PropTypes.string,
-	// 		id: PropTypes.string,
-	// 		description: PropTypes.string,
-	// 		cards: PropTypes.arrayOf(PropTypes.string),
-	// 	})),
-	// })
+CanvasCardForm.propTypes = {
+	id: PropTypes.string,
+	addCard: PropTypes.func,
 };
+
+EditableCard.propTypes = {
+	id: PropTypes.string,
+	parentId: PropTypes.string,
+	content: PropTypes.string,
+	editCard: PropTypes.func,
+};
+
+Canvas.propTypes = {};
 
 export const getStaticProps = async ({ locale }) => ({
 	props: {
